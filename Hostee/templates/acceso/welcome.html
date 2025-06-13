@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Bienvenido - Hostee{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">Bienvenido a Hostee</h1>
+        <p class="lead mb-4">Sistema de gestión para restaurantes con asistencia robótica</p>
+        {% if not user.is_authenticated %}
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4 gap-3">Iniciar Sesión</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

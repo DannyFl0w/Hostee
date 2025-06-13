@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Mesas - Hostee{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Gestión de Mesas</h2>
+
+    <div class="row">
+        {% for mesa in mesas %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mesa {{ mesa.numero }}</h5>
+                    <p class="card-text">
+                        Capacidad: {{ mesa.capacidad }} personas<br>
+                        Estado: 
+                        <span class="badge {% if mesa.estado == 'disponible' %}bg-success{% elif mesa.estado == 'ocupada' %}bg-danger{% else %}bg-warning{% endif %}">
+                            {{ mesa.get_estado_display }}
+                        </span>
+                    </p>
+                    <form method="post" action="{% url 'mesas:cambiar_estado' mesa.id %}">
+                        {% csrf_token %}
+                        <select name="estado" class="form-select mb-2">
+                            {% for estado, nombre in mesa.ESTADOS %}
+                            <option value="{{ estado }}" {% if mesa.estado == estado %}selected{% endif %}>
+                                {{ nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary w-100">Actualizar Estado</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">No hay mesas registradas</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

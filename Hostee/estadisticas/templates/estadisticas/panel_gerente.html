@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panel de Gerente - Hostee{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">Panel de Control - Robot Hostess</h1>
+    
+    <!-- Resumen de 24 horas -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="h4 mb-3">Resumen de las últimas 24 horas</h2>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Personas Detectadas</h5>
+                    <p class="card-text display-6">{{ total_personas_24h }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Energía Consumida</h5>
+                    <p class="card-text display-6">{{ total_energia_24h|floatformat:2 }} kWh</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Distancia Recorrida</h5>
+                    <p class="card-text display-6">{{ total_distancia_24h|floatformat:2 }} m</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Temperatura Promedio</h5>
+                    <p class="card-text display-6">{{ promedio_temperatura_24h|floatformat:1 }}°C</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen Semanal -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="h4 mb-3">Resumen Semanal</h2>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Personas Detectadas</h5>
+                    <p class="card-text display-6">{{ total_personas_semana }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Energía Consumida</h5>
+                    <p class="card-text display-6">{{ total_energia_semana|floatformat:2 }} kWh</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Distancia Recorrida</h5>
+                    <p class="card-text display-6">{{ total_distancia_semana|floatformat:2 }} m</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Temperatura Promedio</h5>
+                    <p class="card-text display-6">{{ promedio_temperatura_semana|floatformat:1 }}°C</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertas Pendientes -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="h4 mb-0">Alertas Pendientes</h2>
+                </div>
+                <div class="card-body">
+                    {% if alertas_pendientes %}
+                        <div class="list-group">
+                            {% for alerta in alertas_pendientes %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ alerta.get_tipo_display }}</h5>
+                                        <small>{{ alerta.fecha|date:"d/m/Y H:i" }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ alerta.descripcion }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No hay alertas pendientes</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Últimas Estadísticas -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h4 mb-0">Últimas Estadísticas</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Personas</th>
+                                    <th>Energía (kWh)</th>
+                                    <th>Distancia (m)</th>
+                                    <th>Temperatura (°C)</th>
+                                    <th>Humedad (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for estadistica in ultimas_estadisticas %}
+                                <tr>
+                                    <td>{{ estadistica.fecha|date:"d/m/Y H:i" }}</td>
+                                    <td>{{ estadistica.personas_detectadas }}</td>
+                                    <td>{{ estadistica.energia_consumida|floatformat:2 }}</td>
+                                    <td>{{ estadistica.distancia_recorrida|floatformat:2 }}</td>
+                                    <td>{{ estadistica.temperatura|floatformat:1 }}</td>
+                                    <td>{{ estadistica.humedad|floatformat:1 }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Usuarios - Hostee{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestión de Usuarios</h1>
+        <a href="{% url 'crear_usuario' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Crear Nuevo Usuario
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Rol Actual</th>
+                            <th>Cambiar Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.username }}</td>
+                            <td>
+                                {% if usuario.groups.all %}
+                                    {{ usuario.groups.all.0.name }}
+                                {% else %}
+                                    <span class="text-muted">Sin rol</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="post" action="{% url 'cambiar_rol' usuario.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <select name="rol" class="form-select form-select-sm">
+                                            <option value="">Sin rol</option>
+                                            {% for grupo in grupos %}
+                                                <option value="{{ grupo.name }}" 
+                                                    {% if usuario.groups.all.0.name == grupo.name %}selected{% endif %}>
+                                                    {{ grupo.name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-save"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" action="{% url 'eliminar_usuario' usuario.id %}" class="d-inline"
+                                    onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No hay usuarios registrados</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

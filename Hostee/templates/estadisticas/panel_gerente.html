@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Control - Hostee{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Panel de Control</h2>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Estado de Mesas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h3>{{ estadisticas.total_mesas }}</h3>
+                                    <p class="mb-0">Total de Mesas</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h3>{{ estadisticas.mesas_ocupadas }}</h3>
+                                    <p class="mb-0">Mesas Ocupadas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Usuarios del Sistema</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h3>{{ estadisticas.total_usuarios }}</h3>
+                                    <p class="mb-0">Total de Usuarios</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h3>{{ estadisticas.usuarios_activos }}</h3>
+                                    <p class="mb-0">Usuarios Activos</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Acciones Rápidas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2 d-md-flex">
+                        <a href="{% url 'gestion_usuarios' %}" class="btn btn-primary">Gestión de Usuarios</a>
+                        <a href="{% url 'mesas:lista_mesas' %}" class="btn btn-secondary">Ver Mesas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load mesas_extra %}
+
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary">Panel de Control de Mesas</h2>
+    <a href="{% url 'mesas:agregar_mesa' %}" class="btn btn-success">➕ Agregar nueva mesa</a>
+  </div>
+
+  <div class="row">
+    {% for mesa in mesas %}
+      <div class="col-md-4 mb-4">
+        <div class="card border-{{ mesa.estado|estado_color }}">
+          <div class="card-header bg-{{ mesa.estado|estado_color }} text-white">
+            <h5 class="mb-0">Mesa {{ mesa.numero }}</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Capacidad:</strong> {{ mesa.capacidad }}</p>
+            <p><strong>Estado:</strong> {{ mesa.estado|title }}</p>
+            <p><strong>Mesero:</strong> {{ mesa.mesero }}</p>
+
+            <form method="post" action="{% url 'mesas:cambiar_estado' mesa.id %}">
+              {% csrf_token %}
+              <div class="input-group mb-2">
+                <select class="form-select" name="estado">
+                  <option value="disponible" {% if mesa.estado == 'disponible' %}selected{% endif %}>Disponible</option>
+                  <option value="ocupada" {% if mesa.estado == 'ocupada' %}selected{% endif %}>Ocupada</option>
+                  <option value="reservada" {% if mesa.estado == 'reservada' %}selected{% endif %}>Reservada</option>
+                </select>
+                <button class="btn btn-outline-primary" type="submit">Actualizar</button>
+              </div>
+            </form>
+
+            <a href="{% url 'mesas:editar_mesa' mesa.id %}" class="btn btn-sm btn-warning"> Editar</a>
+            <a href="{% url 'mesas:eliminar_mesa' mesa.id %}" class="btn btn-sm btn-danger"> Eliminar</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
